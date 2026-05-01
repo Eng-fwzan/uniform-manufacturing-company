@@ -1,0 +1,82 @@
+"use client";
+
+import { useState, useTransition } from "react";
+import { loginAction } from "./actions";
+
+export default function LoginPage() {
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
+
+  const handleSubmit = (formData: FormData) => {
+    setError(null);
+    startTransition(async () => {
+      const result = await loginAction(formData);
+      if (result?.error) setError(result.error);
+    });
+  };
+
+  return (
+    <main className="min-h-screen flex items-center justify-center p-6 bg-slate-50">
+      <div className="w-full max-w-md">
+        <div className="card">
+          <div className="text-center mb-6">
+            <h1 className="text-2xl font-bold text-slate-900">تسجيل الدخول</h1>
+            <p className="text-sm text-slate-600 mt-1">نظام مصنع الزي الموحد</p>
+          </div>
+
+          <form action={handleSubmit} className="space-y-4">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
+                البريد الإلكتروني
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                className="input-field"
+                dir="ltr"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1">
+                كلمة المرور
+              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                className="input-field"
+                dir="ltr"
+              />
+            </div>
+
+            {error && (
+              <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+                {error}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={isPending}
+              className="btn-tablet btn-primary w-full"
+            >
+              {isPending ? "جارٍ الدخول..." : "دخول"}
+            </button>
+          </form>
+
+          <div className="mt-6 pt-6 border-t border-slate-200 text-center">
+            <a href="/tablet" className="text-sm text-brand-600 hover:underline">
+              دخول التابلت بـ PIN ←
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}
