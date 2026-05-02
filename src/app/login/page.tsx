@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Link from "next/link";
 import { loginAction } from "./actions";
 
 export default function LoginPage() {
@@ -71,9 +72,9 @@ export default function LoginPage() {
           </form>
 
           <div className="mt-6 pt-6 border-t border-slate-200 text-center">
-            <a href="/tablet" className="text-sm text-brand-600 hover:underline">
-              دخول التابلت بـ PIN ←
-            </a>
+            <Link href="/" className="text-sm text-brand-600 hover:underline">
+              الرجوع إلى بوابة الدخول
+            </Link>
           </div>
         </div>
       </div>

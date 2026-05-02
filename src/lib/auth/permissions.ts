@@ -9,6 +9,8 @@ export type Permission =
   | "orders.update"
   | "orders.close"
   | "orders.view"
+  | "customers.view"
+  | "customers.manage"
   | "batches.create"
   | "batches.transfer"
   | "batches.receive"
@@ -22,9 +24,12 @@ export type Permission =
   | "inventory.view"
   | "quality.record"
   | "quality.view"
+  | "delivery.view"
   | "delivery.create"
+  | "finance.view"
   | "invoice.create"
   | "payments.record"
+  | "reports.view"
   | "archive.complete"
   | "archive.reopen"
   | "users.manage"
@@ -34,26 +39,31 @@ export type Permission =
 const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
   admin: [
     "orders.create", "orders.update", "orders.close", "orders.view",
+    "customers.view", "customers.manage",
     "batches.create", "batches.transfer", "batches.receive", "batches.view",
     "movements.create", "movements.view",
     "purchases.create", "purchases.approve", "purchases.view",
     "inventory.adjust", "inventory.view",
     "quality.record", "quality.view",
-    "delivery.create", "invoice.create", "payments.record",
-    "archive.complete", "archive.reopen",
+    "delivery.view", "delivery.create", "finance.view", "invoice.create", "payments.record",
+    "reports.view", "archive.complete", "archive.reopen",
     "users.manage", "settings.manage", "audit.view",
   ],
   production_manager: [
     "orders.create", "orders.update", "orders.close", "orders.view",
+    "customers.view", "customers.manage",
     "batches.create", "batches.transfer", "batches.receive", "batches.view",
     "movements.create", "movements.view",
     "purchases.create", "purchases.view",
     "inventory.view",
-    "quality.view",
+    "quality.record", "quality.view",
+    "delivery.view", "delivery.create",
+    "reports.view",
     "archive.complete", "audit.view",
   ],
   purchasing: [
     "orders.view",
+    "customers.view",
     "purchases.create", "purchases.approve", "purchases.view",
     "inventory.adjust", "inventory.view",
   ],
@@ -91,17 +101,19 @@ const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
   delivery: [
     "orders.view",
     "batches.receive", "batches.view",
-    "delivery.create",
+    "delivery.view", "delivery.create",
   ],
   accountant: [
     "orders.view",
-    "invoice.create", "payments.record",
-    "purchases.view",
+    "customers.view", "customers.manage",
+    "finance.view", "invoice.create", "payments.record",
+    "purchases.view", "reports.view",
   ],
 };
 
 export function hasPermission(role: UserRole | null | undefined, permission: Permission): boolean {
   if (!role) return false;
+  if (role === "admin") return true;
   return ROLE_PERMISSIONS[role]?.includes(permission) ?? false;
 }
 

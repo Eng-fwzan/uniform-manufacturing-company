@@ -4,7 +4,8 @@
   "private": true,
   "description": "نظام إدارة مصنع الزي الموحد — On-Premise + تابلت Touch-Friendly",
   "scripts": {
-    "dev": "next dev",
+    "dev": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/dev-clean.ps1",
+    "dev:next": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

@@ -1,4 +1,5 @@
 import { createBrowserClient } from "@supabase/ssr";
+import { envPublic } from "@/lib/env/public";
 
 /**
  * عميل Supabase للمتصفح (Client Components).
@@ -6,7 +7,7 @@ import { createBrowserClient } from "@supabase/ssr";
  */
 export function createSupabaseBrowserClient() {
   return createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    envPublic.NEXT_PUBLIC_SUPABASE_URL,
+    envPublic.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   );
 }

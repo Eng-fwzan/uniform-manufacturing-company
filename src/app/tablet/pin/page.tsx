@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { DEPARTMENT_LABELS, type DepartmentCode } from "@/lib/types/database";
 import PinPad from "./pin-pad";
@@ -34,10 +35,13 @@ export default async function PinPage({
 
           <PinPad department={dept} />
 
-          <div className="mt-6 text-center">
-            <a href="/tablet" className="text-sm text-slate-500 hover:underline">
+          <div className="mt-6 flex justify-center gap-4 text-sm">
+            <Link href="/" className="text-brand-600 hover:underline">
+              بوابة الدخول
+            </Link>
+            <Link href="/tablet" className="text-slate-500 hover:underline">
               ← تغيير القسم
-            </a>
+            </Link>
           </div>
         </div>
       </div>

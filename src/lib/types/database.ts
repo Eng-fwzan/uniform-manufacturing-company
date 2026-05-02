@@ -76,3 +76,23 @@ export interface SystemSetting {
   description: string | null;
   updated_at: string;
 }
+
+export type OrderFileType =
+  | "design"
+  | "embroidery_logo"
+  | "mockup"
+  | "delivery_note"
+  | "invoice"
+  | "photo"
+  | "other";
+
+export interface OrderFile {
+  id: UUID;
+  order_id: UUID;
+  file_path: string;
+  file_type: OrderFileType | string;
+  file_name: string;
+  description: string | null;
+  uploaded_by: UUID | null;
+  created_at: string;
+}

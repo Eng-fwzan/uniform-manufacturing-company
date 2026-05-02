@@ -17,6 +17,7 @@ export async function getCurrentUser(): Promise<AppUser | null> {
     .from("app_users")
     .select("*")
     .eq("id", user.id)
+    .eq("is_active", true)
     .maybeSingle();
 
   return (profile as AppUser | null) ?? null;

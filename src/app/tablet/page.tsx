@@ -30,9 +30,9 @@ export default function TabletPage() {
           ))}
         </div>
 
-        <div className="mt-8 text-center">
-          <Link href="/" className="text-sm text-slate-500 hover:underline">
-            ← العودة
+        <div className="mt-8 flex justify-center gap-4 text-sm">
+          <Link href="/" className="text-brand-600 hover:underline">
+            بوابة الدخول
           </Link>
         </div>
       </div>
