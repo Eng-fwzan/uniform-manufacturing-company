@@ -25,7 +25,15 @@ function SubmitButton() {
   );
 }
 
-export default function BatchForm({ items, canCreate }: { items: OrderItemOption[]; canCreate: boolean }) {
+export default function BatchForm({
+  items,
+  canCreate,
+  className = "card space-y-4",
+}: {
+  items: OrderItemOption[];
+  canCreate: boolean;
+  className?: string;
+}) {
   const [state, formAction] = useActionState(createBatchAction, initialState);
   const [selectedItemId, setSelectedItemId] = useState(items[0]?.id ?? "");
   const departments = Object.keys(DEPARTMENT_LABELS) as DepartmentCode[];
@@ -43,7 +51,7 @@ export default function BatchForm({ items, canCreate }: { items: OrderItemOption
   }
 
   return (
-    <form action={formAction} className="card space-y-4">
+    <form action={formAction} className={className}>
       <div>
         <label htmlFor="order_item_id" className="block text-sm font-medium text-slate-700 mb-1">
           بند الطلب

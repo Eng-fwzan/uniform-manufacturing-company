@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
+import { APP_NAME, COMPANY_LOGO_PATH, COMPANY_NAME } from "@/lib/brand";
 import { loginAction } from "./actions";
 
 export default function LoginPage() {
@@ -21,8 +22,13 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="card">
           <div className="text-center mb-6">
+            <img
+              src={COMPANY_LOGO_PATH}
+              alt={COMPANY_NAME}
+              className="mx-auto mb-4 h-20 w-20 rounded-full border border-slate-200 bg-white object-cover shadow-sm"
+            />
             <h1 className="text-2xl font-bold text-slate-900">تسجيل الدخول</h1>
-            <p className="text-sm text-slate-600 mt-1">نظام مصنع الزي الموحد</p>
+            <p className="text-sm text-slate-600 mt-1">{APP_NAME}</p>
           </div>
 
           <form action={handleSubmit} className="space-y-4">

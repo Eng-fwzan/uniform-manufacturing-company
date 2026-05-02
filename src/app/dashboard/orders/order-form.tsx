@@ -29,10 +29,12 @@ export default function OrderForm({
   canCreate,
   customers,
   fabricVariants,
+  className = "card space-y-4",
 }: {
   canCreate: boolean;
   customers: CustomerOption[];
   fabricVariants: FabricVariantOption[];
+  className?: string;
 }) {
   const [state, formAction] = useActionState(createOrderAction, initialState);
 
@@ -61,7 +63,7 @@ export default function OrderForm({
   }
 
   return (
-    <form action={formAction} className="card space-y-4">
+    <form action={formAction} className={className}>
       <div>
         <label htmlFor="customer_id" className="block text-sm font-medium text-slate-700 mb-1">
           العميل

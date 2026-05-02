@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requirePermission } from "@/lib/auth/require-permission";
+import { COMPANY_LOGO_PATH, COMPANY_NAME } from "@/lib/brand";
 import { INVOICE_STATUS_LABELS, PAYMENT_METHOD_LABELS, formatLabel } from "@/lib/display-labels";
 import { singleRelation } from "@/lib/supabase/relations";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -75,10 +76,17 @@ export default async function InvoicePrintPage({
 
         <header className="border-b border-slate-200 pb-6">
           <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-            <div>
-              <div className="text-sm text-slate-500">مصنع الزي الموحد</div>
-              <h1 className="mt-2 text-3xl font-bold text-slate-900">فاتورة</h1>
-              <div className="mt-2 text-sm text-slate-600" dir="ltr">{invoice.invoice_number}</div>
+            <div className="flex items-start gap-3">
+              <img
+                src={COMPANY_LOGO_PATH}
+                alt={COMPANY_NAME}
+                className="h-16 w-16 rounded-full border border-slate-200 object-cover"
+              />
+              <div>
+                <div className="text-sm text-slate-500">{COMPANY_NAME}</div>
+                <h1 className="mt-2 text-3xl font-bold text-slate-900">فاتورة</h1>
+                <div className="mt-2 text-sm text-slate-600" dir="ltr">{invoice.invoice_number}</div>
+              </div>
             </div>
             <div className="text-sm text-slate-700 md:text-left">
               <div>الحالة: {formatLabel(INVOICE_STATUS_LABELS, invoice.status)}</div>

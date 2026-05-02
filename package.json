@@ -2,7 +2,7 @@
   "name": "uniform-manufacturing-company",
   "version": "0.1.0",
   "private": true,
-  "description": "نظام إدارة مصنع الزي الموحد — On-Premise + تابلت Touch-Friendly",
+  "description": "نظام شركة الصقر المتحد للزي الموحد — On-Premise + تابلت Touch-Friendly",
   "scripts": {
     "dev": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/dev-clean.ps1",
     "dev:next": "next dev",

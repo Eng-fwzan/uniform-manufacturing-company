@@ -25,7 +25,15 @@ function SubmitButton() {
   );
 }
 
-export default function TransferForm({ batches, canTransfer }: { batches: BatchOption[]; canTransfer: boolean }) {
+export default function TransferForm({
+  batches,
+  canTransfer,
+  className = "card space-y-4",
+}: {
+  batches: BatchOption[];
+  canTransfer: boolean;
+  className?: string;
+}) {
   const [state, formAction] = useActionState(createTransferAction, initialState);
   const [selectedBatchId, setSelectedBatchId] = useState(batches[0]?.id ?? "");
   const departments = Object.keys(DEPARTMENT_LABELS) as DepartmentCode[];
@@ -46,7 +54,7 @@ export default function TransferForm({ batches, canTransfer }: { batches: BatchO
   }
 
   return (
-    <form action={formAction} className="card space-y-4">
+    <form action={formAction} className={className}>
       <div>
         <label htmlFor="batch_id" className="block text-sm font-medium text-slate-700 mb-1">
           الدفعة

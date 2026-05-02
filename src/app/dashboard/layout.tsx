@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { hasPermission, type Permission } from "@/lib/auth/permissions";
 import { logoutAction } from "@/app/login/actions";
+import { COMPANY_LOGO_PATH, COMPANY_NAME, COMPANY_SHORT_NAME } from "@/lib/brand";
 import { USER_ROLE_LABELS, DEPARTMENT_LABELS } from "@/lib/types/database";
 
 const mainNavItems: Array<{ href: string; label: string; icon: string; permission?: Permission }> = [
@@ -45,10 +46,16 @@ export default async function DashboardLayout({
   return (
     <div className="min-h-screen flex overflow-x-hidden">
       <aside className="sticky top-0 h-screen w-12 shrink-0 bg-slate-900 text-slate-100 flex flex-col md:w-64">
-        <div className="border-b border-slate-800 p-2 md:p-6">
-          <h2 className="hidden font-bold text-lg md:block">مصنع الزي الموحد</h2>
-          <h2 className="text-center text-lg font-bold md:hidden">م</h2>
-          <p className="mt-1 hidden text-xs text-slate-400 md:block">لوحة التحكم</p>
+        <div className="border-b border-slate-800 p-2 md:p-5">
+          <Link href="/dashboard" className="flex items-center justify-center gap-3 md:justify-start">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white md:h-12 md:w-12">
+              <img src={COMPANY_LOGO_PATH} alt={COMPANY_NAME} className="h-full w-full object-cover" />
+            </span>
+            <span className="hidden min-w-0 md:block">
+              <span className="block truncate text-lg font-bold">{COMPANY_SHORT_NAME}</span>
+              <span className="mt-1 block text-xs text-slate-400">لوحة التحكم</span>
+            </span>
+          </Link>
         </div>
 
         <nav className="flex-1 space-y-1 overflow-y-auto p-1 md:p-4">

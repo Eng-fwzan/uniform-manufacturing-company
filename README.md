@@ -1,6 +1,6 @@
 # uniform-manufacturing-company
 
-نظام إدارة مصنع الزي الموحد — **لوكل (On‑Premise) + تابلت (Touch Friendly)** مع تتبع دفعات غير مكلف.
+نظام شركة الصقر المتحد للزي الموحد — **لوكل (On‑Premise) + تابلت (Touch Friendly)** مع تتبع دفعات غير مكلف.
 
 ## التقنيات
 

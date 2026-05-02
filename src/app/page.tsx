@@ -1,17 +1,25 @@
 import Link from "next/link";
+import { APP_NAME, COMPANY_LOGO_PATH, COMPANY_NAME } from "@/lib/brand";
 
 export default function HomePage() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-6 bg-slate-100">
       <div className="max-w-4xl w-full space-y-8">
-        <div>
-          <div className="text-sm font-medium text-brand-600">بوابة الدخول</div>
-          <h1 className="mt-2 text-3xl md:text-5xl font-bold text-slate-900">
-            نظام إدارة مصنع الزي الموحد
-          </h1>
-          <p className="mt-3 text-base md:text-lg text-slate-600">
-            اختر طريقة الدخول المناسبة للجهاز. هذه الصفحة هي نقطة البداية الوحيدة للنظام.
-          </p>
+        <div className="flex flex-col gap-5 md:flex-row md:items-center">
+          <img
+            src={COMPANY_LOGO_PATH}
+            alt={COMPANY_NAME}
+            className="h-24 w-24 rounded-full border border-slate-200 bg-white object-cover shadow-sm"
+          />
+          <div>
+            <div className="text-sm font-medium text-brand-600">بوابة الدخول</div>
+            <h1 className="mt-2 text-3xl md:text-5xl font-bold text-slate-900">
+              {APP_NAME}
+            </h1>
+            <p className="mt-3 text-base md:text-lg text-slate-600">
+              اختر طريقة الدخول المناسبة للجهاز. هذه الصفحة هي نقطة البداية الوحيدة للنظام.
+            </p>
+          </div>
         </div>
 
         <div className="grid gap-5 md:grid-cols-2">
