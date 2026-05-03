@@ -112,7 +112,6 @@ export default async function TabletDepartmentPage({
           .from("order_files")
           .select("id, order_id, file_name, file_type, file_path, description")
           .in("order_id", orderIds)
-          .in("file_type", ["design", "embroidery_logo"])
           .order("created_at", { ascending: false }),
       ])
     : [{ data: [] }, { data: [] }];

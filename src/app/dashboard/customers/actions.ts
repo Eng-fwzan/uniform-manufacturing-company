@@ -48,5 +48,6 @@ export async function createCustomerAction(
   }
 
   revalidatePath("/dashboard/customers");
+  revalidatePath("/dashboard/orders");
   return { success: true };
 }

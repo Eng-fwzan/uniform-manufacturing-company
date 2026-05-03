@@ -28,7 +28,17 @@ function SubmitButton() {
   );
 }
 
-export default function MovementForm({ orders, batches, canCreate }: { orders: OrderOption[]; batches: BatchOption[]; canCreate: boolean }) {
+export default function MovementForm({
+  orders,
+  batches,
+  canCreate,
+  className = "card space-y-4",
+}: {
+  orders: OrderOption[];
+  batches: BatchOption[];
+  canCreate: boolean;
+  className?: string;
+}) {
   const [state, formAction] = useActionState(createMovementAction, initialState);
   const departments = Object.keys(DEPARTMENT_LABELS) as DepartmentCode[];
 
@@ -41,7 +51,7 @@ export default function MovementForm({ orders, batches, canCreate }: { orders: O
   }
 
   return (
-    <form action={formAction} className="card space-y-4">
+    <form action={formAction} className={className}>
       <div>
         <label htmlFor="order_id" className="block text-sm font-medium text-slate-700 mb-1">
           الطلب

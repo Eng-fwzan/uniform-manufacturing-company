@@ -738,38 +738,36 @@ export default async function OrderDetailsPage({
           {filesWithUrls.length === 0 ? (
             <EmptyState text="لا توجد ملفات مرفوعة لهذا الطلب." />
           ) : (
-            <div className="space-y-3">
+            <div className="grid gap-4 lg:grid-cols-2">
               {filesWithUrls.map((file) => (
-                <div key={file.id} className="flex flex-col gap-3 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="flex min-w-0 gap-3">
-                    {file.signedUrl && isVisualOrderFile(file.file_type) && (
-                      <a href={file.signedUrl} target="_blank" rel="noreferrer" className="shrink-0">
-                        <Image
-                          src={file.signedUrl}
-                          alt={file.file_name}
-                          width={96}
-                          height={80}
-                          unoptimized
-                          className="h-20 w-24 rounded-md border border-slate-200 bg-white object-cover"
-                        />
-                      </a>
-                    )}
-                    <div className="min-w-0">
-                      <div className="font-medium text-slate-900">{file.file_name}</div>
-                      <div className="mt-1 text-xs text-slate-500">
-                        {FILE_TYPE_LABELS[file.file_type] ?? file.file_type} · {formatDateTime(file.created_at)}
-                      </div>
-                      {file.description && (
-                        <div className="mt-2 text-sm leading-6 text-slate-700">{file.description}</div>
-                      )}
+                <div key={file.id} className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+                  {file.signedUrl && isVisualOrderFile(file.file_type) && (
+                    <a href={file.signedUrl} target="_blank" rel="noreferrer" className="mb-3 block overflow-hidden rounded-lg border border-slate-200 bg-white">
+                      <Image
+                        src={file.signedUrl}
+                        alt={file.file_name}
+                        width={720}
+                        height={480}
+                        unoptimized
+                        className="h-72 w-full object-contain p-2"
+                      />
+                    </a>
+                  )}
+                  <div className="min-w-0">
+                    <div className="font-medium text-slate-900">{file.file_name}</div>
+                    <div className="mt-1 text-xs text-slate-500">
+                      {FILE_TYPE_LABELS[file.file_type] ?? file.file_type} · {formatDateTime(file.created_at)}
                     </div>
+                    {file.description && (
+                      <div className="mt-2 text-sm leading-6 text-slate-700">{file.description}</div>
+                    )}
                   </div>
                   {file.signedUrl ? (
-                    <a className="text-sm text-brand-600 hover:underline" href={file.signedUrl} target="_blank" rel="noreferrer">
-                      فتح
+                    <a className="mt-3 inline-flex rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-brand-700 hover:bg-slate-50" href={file.signedUrl} target="_blank" rel="noreferrer">
+                      فتح بالحجم الكامل
                     </a>
                   ) : (
-                    <span className="text-sm text-slate-400">—</span>
+                    <span className="mt-3 inline-block text-sm text-slate-400">—</span>
                   )}
                 </div>
               ))}

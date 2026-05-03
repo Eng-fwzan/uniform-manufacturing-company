@@ -1,10 +1,16 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef, useState, type ChangeEvent } from "react";
 import { useFormStatus } from "react-dom";
 import { uploadOrderAssetAction, type OrderAssetFormState } from "../actions";
 
 const initialState: OrderAssetFormState = {};
+
+type ImagePreview = {
+  url: string;
+  name: string;
+  size: string;
+};
 
 function UploadButton() {
   const { pending } = useFormStatus();
@@ -23,14 +29,45 @@ export default function OrderAssetUploadForm({
   orderId: string;
   canUpload: boolean;
 }) {
+  const formRef = useRef<HTMLFormElement>(null);
   const [state, formAction] = useActionState(uploadOrderAssetAction, initialState);
+  const [preview, setPreview] = useState<ImagePreview | null>(null);
+
+  useEffect(() => {
+    if (!state?.success) return;
+    formRef.current?.reset();
+    setPreview((current) => {
+      if (current) URL.revokeObjectURL(current.url);
+      return null;
+    });
+  }, [state?.success]);
+
+  useEffect(() => {
+    return () => {
+      if (preview) URL.revokeObjectURL(preview.url);
+    };
+  }, [preview]);
+
+  function handlePreviewChange(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0] ?? null;
+    setPreview((current) => {
+      if (current) URL.revokeObjectURL(current.url);
+      if (!file) return null;
+
+      return {
+        url: URL.createObjectURL(file),
+        name: file.name,
+        size: formatFileSize(file.size),
+      };
+    });
+  }
 
   if (!canUpload) {
     return <div className="text-sm text-slate-600">لا يمكن رفع ملفات تشغيلية لهذا الطلب في حالته الحالية.</div>;
   }
 
   return (
-    <form action={formAction} className="rounded-lg border border-slate-200 bg-slate-50 p-4 space-y-4">
+    <form ref={formRef} action={formAction} className="rounded-lg border border-slate-200 bg-slate-50 p-4 space-y-4">
       <input type="hidden" name="order_id" value={orderId} />
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -55,8 +92,22 @@ export default function OrderAssetUploadForm({
         <label htmlFor="asset_file" className="block text-sm font-medium text-slate-700 mb-1">
           الصورة
         </label>
-        <input id="asset_file" name="file" type="file" accept="image/*" className="input-field" required />
+        <input id="asset_file" name="file" type="file" accept="image/*" className="input-field" required onChange={handlePreviewChange} />
+        <p className="mt-1 text-xs text-slate-500">الحد الأقصى للصورة الواحدة 10MB.</p>
       </div>
+
+      {preview && (
+        <div className="rounded-lg border border-slate-200 bg-white p-3">
+          <div className="mb-2 flex items-center justify-between gap-3 text-xs text-slate-500">
+            <span>معاينة الصورة قبل الرفع</span>
+            <span dir="ltr">{preview.size}</span>
+          </div>
+          <a href={preview.url} target="_blank" rel="noreferrer" className="block overflow-hidden rounded-lg border border-slate-200 bg-slate-50">
+            <img src={preview.url} alt={preview.name} className="h-72 w-full object-contain p-2" />
+          </a>
+          <div className="mt-2 truncate text-xs text-slate-500" dir="ltr">{preview.name}</div>
+        </div>
+      )}
 
       <div>
         <label htmlFor="asset_description" className="block text-sm font-medium text-slate-700 mb-1">
@@ -80,4 +131,9 @@ export default function OrderAssetUploadForm({
       <UploadButton />
     </form>
   );
+}
+
+function formatFileSize(bytes: number) {
+  if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))}KB`;
+  return `${(bytes / 1024 / 1024).toFixed(1)}MB`;
 }

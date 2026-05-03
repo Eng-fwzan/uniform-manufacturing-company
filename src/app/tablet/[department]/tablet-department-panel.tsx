@@ -75,6 +75,11 @@ const STATUS_LABELS: Record<string, string> = {
 const FILE_TYPE_LABELS: Record<string, string> = {
   design: "تصميم الزي",
   embroidery_logo: "شعار التطريز",
+  mockup: "نموذج التصميم",
+  delivery_note: "مستند التسليم",
+  invoice: "فاتورة",
+  photo: "صورة",
+  other: "ملف آخر",
 };
 
 function SubmitButton({ label, pendingLabel }: { label: string; pendingLabel: string }) {
@@ -133,21 +138,37 @@ function OrderReference({
       )}
 
       {files.length > 0 && (
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid gap-3">
           {files.map((file) => (
-            <div key={file.id} className="rounded-md bg-white p-3 text-sm text-slate-700">
-              <div className="font-medium text-slate-900">{FILE_TYPE_LABELS[file.file_type] ?? file.file_type}</div>
-              <div className="mt-1 text-xs text-slate-500">{file.file_name}</div>
-              {file.signed_url && (
-                <a href={file.signed_url} target="_blank" rel="noreferrer" className="mt-2 block">
+            <div key={file.id} className="rounded-md border border-slate-200 bg-white p-3 text-sm text-slate-700">
+              <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+                <div className="min-w-0">
+                  <div className="font-semibold text-slate-900">{FILE_TYPE_LABELS[file.file_type] ?? file.file_type}</div>
+                  <div className="mt-1 truncate text-xs text-slate-500" dir="ltr">{file.file_name}</div>
+                </div>
+                <a
+                  href={`/tablet/files/${file.id}/download`}
+                  download={file.file_name}
+                  className="rounded-lg bg-slate-900 px-3 py-2 text-center text-sm font-semibold text-white hover:bg-slate-800"
+                >
+                  تنزيل للجهاز
+                </a>
+              </div>
+              {file.signed_url && isVisualOrderFile(file) && (
+                <a href={file.signed_url} target="_blank" rel="noreferrer" className="mt-3 block overflow-hidden rounded-lg border border-slate-200 bg-slate-50">
                   <Image
                     src={file.signed_url}
                     alt={file.file_name}
-                    width={320}
-                    height={112}
+                    width={720}
+                    height={360}
                     unoptimized
-                    className="h-28 w-full rounded-md border border-slate-200 object-cover"
+                    className="h-60 w-full object-contain p-2"
                   />
+                </a>
+              )}
+              {file.signed_url && (
+                <a href={file.signed_url} target="_blank" rel="noreferrer" className="mt-3 inline-flex rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-brand-700 hover:bg-slate-50">
+                  {isVisualOrderFile(file) ? "فتح الصورة" : "فتح الملف"}
                 </a>
               )}
               {file.description && <div className="mt-2 leading-6">{file.description}</div>}
@@ -511,6 +532,13 @@ function formatJsonSummary(value: Record<string, unknown> | null) {
   return entries
     .map(([key, entryValue]) => `${key}: ${String(entryValue)}`)
     .join(" / ");
+}
+
+function isVisualOrderFile(file: TabletOrderFile) {
+  return (
+    ["design", "embroidery_logo", "mockup", "photo"].includes(file.file_type) ||
+    /\.(png|jpe?g|webp|gif)$/i.test(file.file_name)
+  );
 }
 
 export default function TabletDepartmentPanel({

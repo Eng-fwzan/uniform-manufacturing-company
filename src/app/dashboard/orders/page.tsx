@@ -5,7 +5,7 @@ import { requirePermission } from "@/lib/auth/require-permission";
 import { singleRelation } from "@/lib/supabase/relations";
 import { ORDER_STATUS_LABELS, ORDER_TRACK_LABELS, formatLabel } from "@/lib/display-labels";
 import { summarizeInventoryMovements } from "@/lib/inventory/balances";
-import OrderForm from "./order-form";
+import OrderCreateDialog from "./order-create-dialog";
 
 type OrderItemSummary = {
   product_type: string;
@@ -76,6 +76,7 @@ export default async function OrdersPage() {
   ]);
 
   const canCreate = hasPermission(user.role, "orders.create");
+  const canManageCustomers = hasPermission(user.role, "customers.manage");
   const orderRows = (orders ?? []) as OrderRow[];
   const fabricVariants = ((fabricItems ?? []) as FabricInventoryItem[]).flatMap((item) =>
     (item.variants ?? [])
@@ -105,11 +106,12 @@ export default async function OrdersPage() {
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
-            {canCreate && (
-              <Link href="#new-order" className="rounded-lg bg-brand-600 px-4 py-3 text-sm font-semibold text-white hover:bg-brand-700">
-                طلب جديد
-              </Link>
-            )}
+            <OrderCreateDialog
+              canCreate={canCreate}
+              canManageCustomers={canManageCustomers}
+              customers={customers ?? []}
+              fabricVariants={fabricVariants}
+            />
             <Link href="/dashboard/reports/orders" className="rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50">
               تقرير الطلبات
             </Link>
@@ -123,26 +125,6 @@ export default async function OrdersPage() {
         <MetricCard label="قيد التنفيذ" value={formatNumber(inProgressCount)} hint="داخل دورة الإنتاج" />
         <MetricCard label="تسليم قريب" value={formatNumber(dueSoonCount)} hint="خلال 7 أيام" />
       </section>
-
-      <details id="new-order" className="rounded-lg border border-slate-200 bg-white shadow-sm">
-        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 p-4 marker:hidden">
-          <div>
-            <h2 className="text-lg font-semibold text-slate-900">إنشاء طلب جديد</h2>
-            <p className="mt-1 text-sm text-slate-600">بيانات العميل والبند والقماش والصور في نموذج واحد.</p>
-          </div>
-          <span className="shrink-0 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700">
-            فتح النموذج
-          </span>
-        </summary>
-        <div className="border-t border-slate-200 p-4">
-          <OrderForm
-            customers={customers ?? []}
-            canCreate={canCreate}
-            fabricVariants={fabricVariants}
-            className="space-y-4"
-          />
-        </div>
-      </details>
 
       <section className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
         <div className="mb-4 flex items-center justify-between gap-3">
